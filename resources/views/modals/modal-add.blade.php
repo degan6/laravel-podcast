@@ -9,7 +9,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         {{ Form::label('feed_url', 'Enter the Podcast Feed Url') }}
-                        {!! Form::text('feed_url', 'http://feeds.feedburner.com/TheGreatestGeneration', ['class' => 'form-control','required','placeholder' => 'Enter a Podcast Feed Url here: http://feeds.feedburner.com/TheGreatestGeneration']) !!}
+                        {!! Form::text('feed_url', '', ['class' => 'form-control','required','placeholder' => 'Enter a Podcast Feed Url here: http://feeds.feedburner.com/TheGreatestGeneration']) !!}
                     </div>
                 </div>
                 <div class="modal-footer">
