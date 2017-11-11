@@ -21,6 +21,7 @@ Route::get('/podcasts/player', 'PodcastsController@index');
 Route::get('/podcasts/manage', 'PodcastsController@manage');
 Route::get('/podcasts/favorites', 'PodcastsController@favorites');
 Route::get('/podcasts/settings', 'PodcastsController@settings');
+Route::get('/podcast/{id}', 'PodcastsController@show');
 
 Route::get('/podcasts/auto-update', function () {
 	$exitCode = Artisan::call('updatePodcastItems');
