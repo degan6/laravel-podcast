@@ -91,3 +91,17 @@ Built on Laravel 5.5, Bootstrap 3.6, and easily customizable with SASS. Change t
 Laravel-Podcast is licensed under the MIT license. Enjoy!
 
 * Orignal Concepts from [Podcastwala Github Respository](https://github.com/modestkdr/Podcastwala)
+
+
+---
+
+####todo
+* create hashids for podcasts and episodes
+* create eposode view
+* capture show notes
+* support podcast file archive
+* support file archive to s3
+* create user profile
+* add google auth
+* create notifcation on new podcast
+* caputre full shownotes
