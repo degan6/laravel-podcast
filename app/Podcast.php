@@ -7,7 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Podcast extends Model
 {
 
-	protected $fillable = ['name', 'user_id', 'machine_name', 'web_url', 'feed_url', 'feed_thumbnail_location'];
+	protected $fillable = [
+	    'name',
+        'user_id',
+        'machine_name',
+        'web_url',
+        'feed_url',
+        'feed_thumbnail_location',
+        'description',
+        'itunes:author'
+    ];
 
 	/**
 	 * A podcast has many items
@@ -15,6 +24,14 @@ class Podcast extends Model
 	public function items()
     {
         return $this->hasMany('App\PodcastItem');
+    }
+
+    /**
+     * Number of Episodes in database
+     */
+    public function count()
+    {
+        return $this->items()->count();
     }
 
 }

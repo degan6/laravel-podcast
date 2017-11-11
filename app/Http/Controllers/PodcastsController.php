@@ -33,22 +33,17 @@ class PodcastsController extends Controller
 
         $user = Auth::user();
 
-        $podcast_items = DB::table('podcast_items')
-            ->where('user_id', '=', $user->id)
-            ->where('is_mark_as_read', '!=', 1)
+        $podcast = Podcast::find($id);
+
+        $podcast_items = $podcast->items()
             ->orderBy('published_at', 'desc')->paginate(15);
 
-        $podcasts = DB::table('podcasts')
-            ->where('user_id', '=', $user->id)
-            ->get();
-
         $data = array(
-            'podcasts'          => $podcasts,
+            'podcast'          => $podcast,
             'podcast_items'     => $podcast_items,
-            'user'              => $user,
         );
 
-        return view('podcasts.list', $data);
+        return view('podcasts.list-single', $data);
 
     }
 
@@ -156,6 +151,7 @@ class PodcastsController extends Controller
                     Podcast::create([
                         'name' => $podcastName ? $podcastName : '',
                         'machine_name' => $podcastMachineName,
+                        'description' => $feed->get_description(),
                         'feed_url' => $request->feed_url,
                         'feed_thumbnail_location' => 'images/' . $podcastMachineName . '.png',
                         'user_id' => $user->id,
