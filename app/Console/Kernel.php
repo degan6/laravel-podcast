@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         $schedule->command('updatePodcastItems')->twiceDaily();
+        $schedule->command('podcast:download')->daily();
     }
 
     /**
