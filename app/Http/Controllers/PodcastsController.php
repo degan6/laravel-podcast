@@ -33,7 +33,7 @@ class PodcastsController extends Controller
 
         $user = Auth::user();
 
-        $podcast = Podcast::find($id);
+        $podcast = Podcast::findOrFail($id);
 
         $podcast_items = $podcast->items()
             ->orderBy('published_at', 'desc')->paginate(15);
