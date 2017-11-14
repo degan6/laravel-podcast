@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Illuminate\Http\File;
 use App\PodcastItem;
 use App\Podcast;
-use Auth;
-use Feeds;
-use Image;
 
 class PodcastsController extends Controller
 {
