@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\PodcastItem;
 use Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PodcastItemsController extends Controller
 {
@@ -132,6 +134,15 @@ class PodcastItemsController extends Controller
             'items' => $items,
             'query' => $query,
         ]);
+    }
+
+    public function download(Request $request, Response $response, String $podcastId, String $itemId)
+    {
+        $m = new \Mimey\MimeTypes;
+
+        $p = Storage::disk('podcasts')->get(PodcastItem::findOrFail($itemId)->file_name);
+
+        return Response::create($p, 200, ['Content-Type' => $m->getMimeType('mp3')]);
     }
 
 }

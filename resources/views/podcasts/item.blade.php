@@ -13,6 +13,7 @@
         {{App\PodcastItem::find($item->id)->podcast->name}}
       </small>
     </h4>
+
     <h3 class="podcast-item-title">
       {{-- <a target="_blank" href="{{ $item->url }}"> --}}
         {{ $item->title }}
@@ -57,11 +58,23 @@
               </span>
             </li>
             <li class='download'>
-              <a href='{{ $item->audio_url}}' download='{{ $item->audio_url}}' data-toggle="tooltip" data-placement="bottom" title="Download">
+              <a href='{{ $item->audio_url}}' download='{{ $item->audio_url}}' data-toggle="tooltip" data-placement="bottom" title="Download From RSS">
                 <i class="fa fa-fw fa-cloud-download" aria-hidden="true"></i>
-                <span class="sr-only">Download</span>
+                <span class="sr-only">Download From RSS</span>
               </a>
             </li>
+            @if($item->downloaded)
+                <li class='download'>
+                    <a href='{{ route('podcast.item.download', ['itemId' => $item->id, 'podcastId' => $item->podcast_id]) }}'
+                       data-toggle="tooltip"
+                       data-placement="bottom"
+                       title="Download Localy"
+                    >
+                        <i class="fa fa-fw fa-cloud-download" aria-hidden="true"></i>
+                        <span class="sr-only">Download Localy</span>
+                    </a>
+                </li>
+            @endif
         </ul>
     </div>
   </div>

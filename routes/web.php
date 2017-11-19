@@ -23,6 +23,8 @@ Route::get('/podcasts/favorites', 'PodcastsController@favorites');
 Route::get('/podcasts/settings', 'PodcastsController@settings');
 Route::get('/podcast/{id}', 'PodcastsController@show');
 
+Route::get('/podcast/item/{id}/download', 'PodcastItemsController@download')->name('podcast.item.download');
+
 Route::get('/podcasts/auto-update', function () {
 	$exitCode = Artisan::call('updatePodcastItems');
 	if ($exitCode == 0) {
@@ -36,3 +38,4 @@ Route::get('/podcast/search', 'PodcastItemsController@search');
 Route::post('/podcast/mark-as-read', 'PodcastItemsController@markAsRead');
 Route::post('/podcast/mark-as-favorite', 'PodcastItemsController@markAsFavorite');
 Route::post('/podcast/mark-all-prev-read', 'PodcastItemsController@markAllPrevAsRead');
+Route::get('/podcast/{podcastId}/item/{itemId}/download', 'PodcastItemsController@download')->name('podcast.item.download');
