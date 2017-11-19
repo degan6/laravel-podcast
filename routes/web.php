@@ -18,7 +18,7 @@ Auth::routes();
 Route::get('/', 'PodcastsController@index');
 Route::get('/podcast', 'PodcastsController@index');
 Route::get('/podcasts/player', 'PodcastsController@index');
-Route::get('/podcasts/manage', 'PodcastsController@manage');
+Route::get('/podcasts/manage', 'PodcastsController@manage')->name('podcast.manage');
 Route::get('/podcasts/favorites', 'PodcastsController@favorites');
 Route::get('/podcasts/settings', 'PodcastsController@settings');
 Route::get('/podcast/{id}', 'PodcastsController@show')->name('podcast');
