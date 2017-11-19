@@ -21,7 +21,7 @@ Route::get('/podcasts/player', 'PodcastsController@index');
 Route::get('/podcasts/manage', 'PodcastsController@manage');
 Route::get('/podcasts/favorites', 'PodcastsController@favorites');
 Route::get('/podcasts/settings', 'PodcastsController@settings');
-Route::get('/podcast/{id}', 'PodcastsController@show');
+Route::get('/podcast/{id}', 'PodcastsController@show')->name('podcast');
 
 Route::get('/podcast/item/{id}/download', 'PodcastItemsController@download')->name('podcast.item.download');
 
