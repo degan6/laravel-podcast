@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\PodcastItem;
 use App\Podcast;
+use Feeds;
+use Image;
 
 class PodcastsController extends Controller
 {
@@ -130,6 +132,7 @@ class PodcastsController extends Controller
 
         if ($request->feed_url) {
 
+
             $feed = Feeds::make($request->feed_url);
             $feed->force_feed(true);
             $feed->handle_content_type();
@@ -219,7 +222,7 @@ class PodcastsController extends Controller
 
         Podcast::findOrFail($id)->delete();
 
-        return back()->with('success', 'Successfully deleted the Podcast!');
+        return route('podcast.manage')->with('success', 'Successfully deleted the Podcast!');
 
     }
 
