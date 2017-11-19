@@ -40,9 +40,9 @@
                             <a style="color: rgb(230, 230, 230);" href="{{ route('podcast', ['id' => $cast->id ] )}}"><h4 class="podcast-title">{{$cast->name}}</h4></a>
 
                             <p>
-                                {{-- <a target="_blank" href="{{$cast->web_url}}"> --}}
+                                <a href="{{ route('podcast', ['id' => $cast->id ] )}}">
                                     <img class="podcast-thumbnail" width="100" height="100" src="{{asset($cast->feed_thumbnail_location)}}" />
-                                {{-- </a> --}}
+                                </a>
                             </p>
 
                             <div class="podcast-action-list">
