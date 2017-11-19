@@ -10,7 +10,7 @@
   <div class="col-sm-9">
     <h4 class="podcast-title">
       <small>
-        {{App\PodcastItem::find($item->id)->podcast->name}}
+        <a style="color: #777777" href="{{ route('podcast', ['id' => App\PodcastItem::find($item->id)->podcast->id ] )}}">{{App\PodcastItem::find($item->id)->podcast->name}}</a>
       </small>
     </h4>
 

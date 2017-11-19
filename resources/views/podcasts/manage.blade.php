@@ -37,7 +37,7 @@
                         <div class="podcast-container">
                             <span class="podcast-added-on">Added on {{ date('F d, Y', strtotime($cast->created_at)) }}</span>
 
-                            <h4 class="podcast-title">{{$cast->name}}</h4>
+                            <a style="color: rgb(230, 230, 230);" href="{{ route('podcast', ['id' => $cast->id ] )}}"><h4 class="podcast-title">{{$cast->name}}</h4></a>
 
                             <p>
                                 {{-- <a target="_blank" href="{{$cast->web_url}}"> --}}
