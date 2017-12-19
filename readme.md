@@ -100,12 +100,9 @@ Laravel-Podcast is licensed under the MIT license. Enjoy!
 * remove users from podcast views
 * create eposode view
 * capture show notes
-* support podcast file archive
-* support file archive to s3
 * create user profile
 * add google auth
 * create notifcation on new podcast
 * caputre full shownotes
-* Bug: crashes if podcast has no cover image
 * Bug: doesn't like NPR podcasts
 * bug: doesn't like hellointernet
