@@ -144,8 +144,16 @@ class PodcastsController extends Controller
                     $podcastMachineName = strtolower(preg_replace('/\s+/', '', $podcastName));
 
                     // Save the feed thumbnail to file system and save file path to database
-                    $img = Image::make($feed->get_image_url())->resize(100, 100);
-                    $img->save(public_path('images/' . $podcastMachineName . '.png'));
+                    if($feed->get_image_url())
+                    {
+                        $img = Image::make($imageUrl)->resize(100, 100);
+                        $img->save(public_path('images/' . $podcastMachineName . '.png'));
+                    } else {
+
+                        $img = Image::make('http://cvb7.com/identicons/identicon.php?size=100&hash=' . md5($feed->get_link()))
+                            ->resize(100, 100);
+                        $img->save(public_path('images/' . $podcastMachineName . '.png'));
+                    }
 
                     Podcast::create([
                         'name' => $podcastName ? $podcastName : '',
