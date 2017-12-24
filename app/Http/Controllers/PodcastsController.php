@@ -174,7 +174,7 @@ class PodcastsController extends Controller
                             'url' => $item->get_permalink(),
                             'audio_url' => $item->get_enclosure()->get_link(),
                             'title' => $item->get_title(),
-                            'description' => trim(strip_tags(str_limit($item->get_description(), 200))),
+                            'description' => $item->get_description(),
                             'published_at' => $item->get_date('Y-m-d H:i:s'),
                         ]);
                     }

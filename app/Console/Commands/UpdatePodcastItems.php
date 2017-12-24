@@ -75,7 +75,7 @@ class UpdatePodcastItems extends Command {
                             PodcastItem::create([
                                 'user_id' => $subscriber->user_id,
                                 'title' => strip_tags($item->get_title()),
-                                'description' => strip_tags(str_limit($item->get_description(), 100)),
+                                'description' => $item->get_description(),
                                 'published_at' => $item->get_date('Y-m-d'),
                                 'url' => $item->get_permalink(),
                                 'audio_url' => $item->get_enclosure()->get_link(),
