@@ -231,4 +231,6 @@ return [
 
     ],
 
+    'download_url' => env('DOWNLOAD_URL'),
+
 ];

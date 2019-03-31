@@ -93,9 +93,6 @@ class UpdatePodcastItems extends Command {
                 } else {
                     break;
                 }
-                if(!count($newItems) > 0){
-                    event(new NewItems($newItems));
-                }
             }
 
         }

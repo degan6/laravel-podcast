@@ -95,13 +95,14 @@ class DownloadPodcast extends Command
         try{
             $response = $this->guzzle->request('GET', $podcast->audio_url);
 
-
             $fileName = $this->createFilename($podcast, $response);
             Storage::disk($disk)->put($fileName, $response->getBody()->getContents());
 
+            $this->notifyOnDownload($podcast->podcast()->first()->name, true, $fileName, $podcast->title);
         }
         catch (\GuzzleHttp\Exception\GuzzleException $e)
         {
+            $this->notifyOnDownload($podcast->title, false, '', '', $e->getMessage());
             return ['error' => true, 'e' => $e];
         }
 
@@ -116,5 +117,30 @@ class DownloadPodcast extends Command
         return $podcast->podcast()->first()->machine_name . '/'
             . $title . '.' .
             $this->mimes->getExtension($response->getHeaderLine('Content-Type'));
+    }
+
+    /*
+     * @param
+     * @param
+     */
+    private function notifyOnDownload($podcastName, $downloadStatus, $fileName = '', $itemTitle = '', $downloadError = '')
+    {
+        try{
+            $response = $this->guzzle->post(
+                config('app.download_url'), [
+                \GuzzleHttp\RequestOptions::JSON =>  [
+                    'download_status' => $downloadStatus,
+                    'download_error' => $downloadError,
+                    'podcast_name' => $podcastName,
+                    'file_name' => $fileName,
+                    'item_name' => $itemTitle
+                ]]
+            );
+        }
+        catch (\GuzzleHttp\Exception\GuzzleException $e)
+        {
+            return ['error' => true, 'e' => $e];
+        }
+        return ['error' => false, 'filename' => $fileName];
     }
 }
