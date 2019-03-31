@@ -146,7 +146,8 @@ class PodcastsController extends Controller
                     // Save the feed thumbnail to file system and save file path to database
                     if($feed->get_image_url())
                     {
-                        $img = Image::make($imageUrl)->resize(100, 100);
+
+                        $img = Image::make($feed->get_image_url())->resize(100, 100);
                         $img->save(public_path('images/' . $podcastMachineName . '.png'));
                     } else {
 
@@ -155,15 +156,22 @@ class PodcastsController extends Controller
                         $img->save(public_path('images/' . $podcastMachineName . '.png'));
                     }
 
-                    Podcast::create([
-                        'name' => $podcastName ? $podcastName : '',
-                        'machine_name' => $podcastMachineName,
-                        'description' => $feed->get_description(),
-                        'feed_url' => $request->feed_url,
-                        'feed_thumbnail_location' => 'images/' . $podcastMachineName . '.png',
-                        'user_id' => $user->id,
-                        'web_url' => $feed->get_link(),
-                    ]);
+                    try{
+                        $podcast = Podcast::create([
+                            'name' => $podcastName ? $podcastName : '',
+                            'machine_name' => $podcastMachineName,
+                            'description' => $feed->get_description(),
+                            'feed_url' => $request->feed_url,
+                            'feed_thumbnail_location' => 'images/' . $podcastMachineName . '.png',
+                            'user_id' => $user->id,
+                            'web_url' => $feed->get_link(),
+                        ]);
+                    }
+                    Catch(\Illuminate\Database\QueryException $e)
+                    {
+                        return redirect(route('podcast.manage'))->with('error', 'Sorry, we couldn\'t add the feed. Maybe you\'r already subscribed?');
+                    }
+
 
                     foreach ($feed->get_items() as $item) {
                         PodcastItem::create([
@@ -176,23 +184,21 @@ class PodcastsController extends Controller
                             'title' => $item->get_title(),
                             'description' => $item->get_description(),
                             'published_at' => $item->get_date('Y-m-d H:i:s'),
+                            'download_error' => '',
+                            'download_error_desc' => '',
                         ]);
                     }
-
-                    // @todo Podcast was added
-                    return redirect('podcasts/player');
+                    return redirect(route('podcast', $podcast->id))->with('success', 'Added Podcast');
                 } else {
-                    // @todo flash msg
-                    return 'This doesn\'t seem to be an RSS feed with audio files. Please try another feed.';
+                    return redirect(route('podcast.manage'))->with('error', 'Sorry, this feed cannot be imported. Please try another feed');
                 }
             } else {
-                // @todo Could not add podcast
-                return 'Sorry, this feed cannot be imported. Please try another feed';
+                return redirect(route('podcast.manage'))->with('error', 'Sorry, this feed cannot be imported. Please try another feed');
             }
 
         } else {
             // @todo use validation
-            return 'Invalid feed URL given.';
+            return redirect(route('podcast.manage'))->with('error', 'Invalid url');
         }
     }
 
@@ -230,7 +236,7 @@ class PodcastsController extends Controller
 
         Podcast::findOrFail($id)->delete();
 
-        return route('podcast.manage')->with('success', 'Successfully deleted the Podcast!');
+        return redirect(route('podcast.manage'))->with('success', 'Successfully deleted the Podcast.');
 
     }
 
