@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\NewItems;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
 use App\PodcastItem;
@@ -40,6 +41,7 @@ class UpdatePodcastItems extends Command {
      */
     public function handle() {
 
+        $newItems = [];
         $uniquePodcasts = DB::table('podcasts')
             ->select('id', 'feed_url', 'machine_name')
             ->groupBy('id')->get();
@@ -72,7 +74,7 @@ class UpdatePodcastItems extends Command {
 
                         // if this item is not already in the DB
                         if ($podcastItemsCount == 0) {
-                            PodcastItem::create([
+                            $ep = PodcastItem::create([
                                 'user_id' => $subscriber->user_id,
                                 'title' => strip_tags($item->get_title()),
                                 'description' => $item->get_description(),
@@ -80,11 +82,19 @@ class UpdatePodcastItems extends Command {
                                 'url' => $item->get_permalink(),
                                 'audio_url' => $item->get_enclosure()->get_link(),
                                 'podcast_id' => $subscriber->podcast_id,
+                                'download_error' => '',
+                                'download_error_desc' => '',
                             ]);
+
+                            $newItems[] = $ep;
                         }
+
                     }
                 } else {
                     break;
+                }
+                if(!count($newItems) > 0){
+                    event(new NewItems($newItems));
                 }
             }
 
