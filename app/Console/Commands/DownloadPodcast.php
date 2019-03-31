@@ -100,15 +100,22 @@ class DownloadPodcast extends Command
 
     private function downloadEpisode(PodcastItem $podcast, $disk)
     {
-        $response = $this->guzzle->request('GET', $podcast->audio_url);
+        try{
+            $response = $this->guzzle->request('GET', $podcast->audio_url);
 
-        if(!$response->getStatusCode() == '200')
+            if(!$response->getStatusCode() == '200')
+            {
+                return false;
+            }
+
+            $fileName = $this->createFilename($podcast, $response);
+            Storage::disk($disk)->put($fileName, $response->getBody()->getContents());
+
+        }
+        catch (\GuzzleHttp\Exception\ClientException $e)
         {
             return false;
         }
-
-        $fileName = $this->createFilename($podcast, $response);
-        Storage::disk($disk)->put($fileName, $response->getBody()->getContents());
 
         return $fileName;
     }
