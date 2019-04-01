@@ -52,10 +52,15 @@ class UpdatePodcastItems extends Command {
                 ->where('machine_name', '=', $podcast->machine_name)
                 ->get();
 
-            $items = Feeds::make($podcast->feed_url)->get_items();
+            try {
+                $items = Feeds::make($podcast->feed_url)->get_items();
+            } catch (\Exception $e)
+            {
+                dd($e->getMessage());
+            }
 
             // Calculate 48 hours ago
-            $yesterday = time() - (24 * 2 * 60 * 60);
+            $yesterday = time() - (24 * 365 * 10 * 60 * 60);
 
             foreach ($items as $item) {
                 $itemPubDate = $item->get_date();
