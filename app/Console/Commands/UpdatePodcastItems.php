@@ -59,6 +59,7 @@ class UpdatePodcastItems extends Command {
                 $podcastObject = Podcast::find($podcast->id);
                 $podcastObject->errored = true;
                 $podcastObject->lastError = date("Y-m-d H:i:s");
+                $podcastObject->save();
                 continue;
             }
 
