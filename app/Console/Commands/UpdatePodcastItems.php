@@ -56,11 +56,14 @@ class UpdatePodcastItems extends Command {
                 $items = Feeds::make($podcast->feed_url)->get_items();
             } catch (\Exception $e)
             {
-                dd($e->getMessage());
+                $podcastObject = Podcast::find($podcast->id);
+                $podcastObject->errored = true;
+                $podcastObject->lastError = date("Y-m-d H:i:s");
+                continue;
             }
 
-            // Calculate 48 hours ago
-            $yesterday = time() - (24 * 365 * 10 * 60 * 60);
+            // Calculate 1 week ago
+            $yesterday = time() - (24 * 7 * 60 * 60);
 
             foreach ($items as $item) {
                 $itemPubDate = $item->get_date();
